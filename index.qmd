@@ -1,0 +1,135 @@
+---
+title: "Programa de Prevención & Control del Dengue de Michoacán felipe | 2025"
+format: 
+  dashboard:
+      nav-buttons: [twitter, github, facebook]
+theme: custom.scss
+---
+
+```{r setup}
+library(sf)
+mapview::mapviewOptions(default = TRUE,
+                        basemaps.color.shuffle = FALSE)
+load("/Users/felipedzul/Library/CloudStorage/OneDrive-Personal/proyects/geocoding_mex/2025/8.RData/denmex_2025.RData")
+library(magrittr)
+```
+
+
+# Cadenas de Tranmisión 
+
+::: panel-tabset
+
+### Morelia
+
+```{r cadenas_morelia}
+# Step 2. cadena de transmision de morelos ####
+geocoded_dataset <- z |>
+    dplyr::mutate(onset = FEC_INI_SIGNOS_SINT) |> 
+    dplyr::mutate(x = long,
+                  y = lat) |>
+    sf::st_as_sf(coords = c("long", "lat"),
+                 crs = 4326) |>
+    dplyr::select(DES_MPO_RES,VEC_ID, onset, SEM, ESTATUS_CASO, x, y,
+                  DENGUE_SER_TRIPLEX, DES_DIAG_FINAL, IDE_EDA_ANO) |>
+    dplyr::mutate(ESTATUS_CASO = ifelse(ESTATUS_CASO == 2,
+                                        "Confirmado",
+                                        "Probable"))
+
+loc <- rgeomex::extract_locality(cve_edo = "16",
+                                 locality = "Morelia")
+
+
+
+geocoded_dataset <- geocoded_dataset[loc, ]
+
+
+x <- denhotspots::knox(x = geocoded_dataset,
+                       crs = "+proj=eqc",
+                       ds = 100, # distance in meters
+                       dt = 20,  # days 0 to 20 day
+                       sym = 1000,
+                       sp_link = FALSE, # for sf
+                       planar_coord = FALSE)
+
+denhotspots::space_time_link_map(x = x,
+                                 locality = "Morelia",
+                                 cve_edo = "16",
+                                 maptype = "interactive_map")
+```
+
+### Uruapan
+
+```{r cadenas_uruapan}
+denhotspots::transmission_chains_map(geocoded_dataset = z,
+                                     cve_edo = "16",
+                                     locality = "Uruapan",
+                                     dengue_cases = "Probable")
+```
+
+
+### Huetamo
+
+```{r cadenas_huetamo}
+denhotspots::transmission_chains_map(geocoded_dataset = z,
+                                     cve_edo = "16",
+                                     locality = "Huetamo de Nuñez",
+                                     dengue_cases = "Probable")
+```
+
+
+:::
+
+
+# Mapas de Calor
+
+::: panel-tabset
+
+
+### Morelia
+
+```{r heatmap_morelia}
+densnv::mp_heatmap(geocoded_datasets = z,
+                   cve_edo = "16",
+                   locality = "Morelia",
+                   status_caso = c(1, 2),
+                   week = c(1:53),
+                   zoom = NULL,
+                   map_type = NULL,
+                   alpha = 0.6,
+                   static = FALSE,
+                   palette = viridis::turbo)
+```
+
+### Uruapan
+
+```{r heatmap_uruapan}
+densnv::mp_heatmap(geocoded_datasets = z,
+                   cve_edo = "16",
+                   locality = "Uruapan",
+                   status_caso = c(1, 2),
+                   week = c(1:53),
+                   zoom = NULL,
+                   map_type = NULL,
+                   alpha = 0.6,
+                   static = FALSE,
+                   palette = viridis::turbo)
+```
+
+
+### Huetamo
+
+```{r heatmap_huetamo}
+densnv::mp_heatmap(geocoded_datasets = z,
+                   cve_edo = "16",
+                   locality = "Huetamo de Nuñez",
+                   status_caso = c(1, 2),
+                   week = c(1:53),
+                   zoom = NULL,
+                   map_type = NULL,
+                   alpha = 0.6,
+                   static = FALSE,
+                   palette = viridis::turbo)
+```
+
+
+:::

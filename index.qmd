@@ -1,5 +1,5 @@
 ---
-title: "Programa de Prevención & Control del Dengue de Michoacán felipe | 2025"
+title: "Programa de Prevención & Control del Dengue de Michoacán | 2025"
 format: 
   dashboard:
       nav-buttons: [twitter, github, facebook]

@@ -22,39 +22,10 @@ library(magrittr)
 ### Morelia
 
 ```{r cadenas_morelia}
-# Step 2. cadena de transmision de morelos ####
-geocoded_dataset <- z |>
-    dplyr::mutate(onset = FEC_INI_SIGNOS_SINT) |> 
-    dplyr::mutate(x = long,
-                  y = lat) |>
-    sf::st_as_sf(coords = c("long", "lat"),
-                 crs = 4326) |>
-    dplyr::select(DES_MPO_RES,VEC_ID, onset, SEM, ESTATUS_CASO, x, y,
-                  DENGUE_SER_TRIPLEX, DES_DIAG_FINAL, IDE_EDA_ANO) |>
-    dplyr::mutate(ESTATUS_CASO = ifelse(ESTATUS_CASO == 2,
-                                        "Confirmado",
-                                        "Probable"))
-
-loc <- rgeomex::extract_locality(cve_edo = "16",
-                                 locality = "Morelia")
-
-
-
-geocoded_dataset <- geocoded_dataset[loc, ]
-
-
-x <- denhotspots::knox(x = geocoded_dataset,
-                       crs = "+proj=eqc",
-                       ds = 100, # distance in meters
-                       dt = 20,  # days 0 to 20 day
-                       sym = 1000,
-                       sp_link = FALSE, # for sf
-                       planar_coord = FALSE)
-
-denhotspots::space_time_link_map(x = x,
-                                 locality = "Morelia",
-                                 cve_edo = "16",
-                                 maptype = "interactive_map")
+denhotspots::transmission_chains_map(geocoded_dataset = z,
+                                     cve_edo = "16",
+                                     locality = "Morelia",
+                                     dengue_cases = "Probable")
 ```
 
 ### Uruapan

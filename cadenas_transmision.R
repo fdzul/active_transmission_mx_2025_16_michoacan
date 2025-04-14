@@ -10,3 +10,6 @@ denhotspots::transmission_chains_map(geocoded_dataset = z_mich,
 
 rgeomex::extract_locality(cve_edo = "16",
                           locality = "Huetamo Huetamo de Núñez")
+
+
+densnv::mp_treemap(snv_dataset = )

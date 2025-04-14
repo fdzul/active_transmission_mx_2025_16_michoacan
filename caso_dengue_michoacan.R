@@ -7,6 +7,10 @@ x <- data.table::fread(input = "/Users/felipedzul/Downloads/DENGUE2_.txt",
                        fill=TRUE)
 
 # Step 2. casos de dengue en país ####
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(gridtext)
 densnv::mp_treemap(country = TRUE,
                    year = 2025,
                    snv_dataset = x)

@@ -16,8 +16,9 @@ densnv::mp_treemap(country = TRUE,
                    snv_dataset = x)
 
 
-# Step 3. casos de dengue en Michiacan ####
+
+# Step 3. casos de dengue en Michoacan ####
 densnv::mp_treemap(country = FALSE,
                    year = 2025,
-                   cve_edo = "16",
+                   cve_edo = "30",
                    snv_dataset = x)

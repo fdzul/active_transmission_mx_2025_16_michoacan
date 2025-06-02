@@ -40,12 +40,6 @@ denhotspots::transmission_chains_map(geocoded_dataset = z,
 
 ### Huetamo
 
-```{r cadenas_huetamo}
-denhotspots::transmission_chains_map(geocoded_dataset = z,
-                                     cve_edo = "16",
-                                     locality = "Huetamo de Nuñez",
-                                     dengue_cases = "Probable")
-```
 
 
 :::
